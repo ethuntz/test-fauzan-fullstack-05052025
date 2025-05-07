@@ -1,1 +1,0 @@
-// Placeholder for app/Http/Controllers/TravelController.php
