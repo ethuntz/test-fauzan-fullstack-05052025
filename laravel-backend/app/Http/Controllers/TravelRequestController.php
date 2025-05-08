@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TravelRequestExport;
 use App\Models\TravelRequest;
 use App\Http\Resources\TravelRequestResource;
-use App\Exports\TravelRequestsExport;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\Response;
 use Exception;
-use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
 
 class TravelRequestController extends Controller
 {
@@ -31,6 +30,11 @@ class TravelRequestController extends Controller
             
             if ($request->has('arrival_date')) {
                 $query->where('arrival_date', '<=', $request->arrival_date);
+            }
+            if ($request->has('status')) {
+                $query->whereHas('payments', function($q) use ($request) {
+                    $q->where('status', $request->status);
+                });
             }
             return Response::paginated(TravelRequestResource::collection($query->paginate(10)), 'Succes get data');
         }
@@ -108,6 +112,6 @@ class TravelRequestController extends Controller
 
     public function export()
     {
-        return Excel::download(new TravelRequestsExport, 'travel-requests.xlsx');
+        return FacadesExcel::download(new TravelRequestExport, 'travelRequest.xlsx');
     }
 }

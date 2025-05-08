@@ -11,7 +11,7 @@ use App\Http\Controllers\PaymentController;
 
 // Travel Request Routes
 Route::apiResource('travel-requests', TravelRequestController::class);
-Route::get('travel-requests/export', [TravelRequestController::class, 'export']);
+Route::get('export', [TravelRequestController::class, 'export']);
 
 // Payment Routes
 Route::post('travel-requests/{travelRequest}/pay', [PaymentController::class, 'initiatePayment']);

@@ -57,7 +57,7 @@ class Response
     }
 
     // Return not found response
-    public static function validationError($errors, string $message = 'Validation errors')
+    public static function validationError(string $message = 'Validation errors')
     {
         return response()->json([
             'status' => 'error',
